@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_home_persons" name="Persons" customize_show="True" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <a id="register_person" role="button"
+              href="/new/person" style="width: 635px;"
+              class="btn btn-primary btn-block">
+               <i class="fa fa-credit-card"/>
+               Register Person
+           </a>
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Persons</t>
+                <t t-set="url" t-value="'/my/persons'"/>
+                <t t-set="placeholder_count" t-value="'persons_count'"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_breadcrumbs" inherit_id="portal.portal_breadcrumbs">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'persons_list_view'" class="breadcrumb-item">Persons</li>
+            <li t-if="page_name == 'register_person'" class="breadcrumb-item">Register Person</li>
+            <li t-if="page_name == 'persons_form_view'" class="breadcrumb-item">
+                <a href="/my/persons">Persons</a>
+                /
+                <span t-out="person.name"/>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_persons_list_view" name="My Persons">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Persons</t>
+            </t>
+            <t t-if="group_persons" t-call="portal.portal_table">
+                <t t-foreach="group_persons" t-as="persons">
+                    <thead>
+                        <tr t-if="groupby in ('date', 'phone')">
+                            <th class="text-center" t-if="groupby == 'date'" colspan="6">
+                                <h1>Date :
+                                    <em class="font-weight-normal text-muted" t-out="persons['date']"/>
+                                    (
+                                    <t t-out="len(persons['persons'])"/>
+                                    )
+                                </h1>
+                            </th>
+                            <th class="text-center" t-if="groupby == 'phone'" colspan="6">
+                                <h1>Phone :
+                                    <em class="font-weight-normal text-muted" t-out="persons['phone']"/>
+                                    (
+                                    <t t-out="len(persons['persons'])"/>
+                                    )
+                                </h1>
+                            </th>
+                        </tr>
+                        <tr class="active">
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Image</th>
+                            <th>Name</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center" t-if="groupby != 'phone'">Phone</th>
+                            <th class="text-center" t-if="groupby != 'date'">Date</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="persons['persons']" t-as="person">
+                            <tr>
+                                <td class="text-center">
+                                    <a t-attf-href="/my/person/#{person.id}">
+                                        <t t-out="person.id"/>
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    <t t-if="person.img">
+                                        <img t-attf-src="data:image/png;base64,{{person.img}}" alt="avatar"
+                                             class="rounded-circle img-fluid" style="width:60px;height:60px;"/>
+                                    </t>
+                                    <t t-else="">
+                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                                             alt="avatar"
+                                             class="rounded-circle img-fluid" style="width:60px;height:60px;"/>
+                                    </t>
+                                </td>
+                                <td>
+                                    <a t-attf-href="/my/person/#{person.id}">
+                                        <t t-out="person.name"/>
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    <t t-out="person.email"/>
+                                </td>
+                                <td class="text-center" t-if="groupby != 'phone'">
+                                    <t t-out="person.phone"/>
+                                </td>
+                                <td class="text-center" t-if="groupby != 'date'">
+                                    <t t-out="person.date"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </t>
+            </t>
+            <p t-else="">There are Currently no Persons.</p>
+        </t>
+    </template>
+
+    <template id="portal_my_persons_form_view" inherit_id="portal.portal_sidebar">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <t t-if="page_name == 'persons_form_view'">
+                <section style="background-color: #eee;">
+                    <div class="container py-5">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="card mb-4">
+                                    <div class="card-body text-center">
+                                        <t t-if="person.img">
+                                            <img t-attf-src="data:image/png;base64,{{person.img}}" alt="avatar"
+                                                 class="rounded-circle img-fluid" style="width:150px;"/>
+                                        </t>
+                                        <t t-else="">
+                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                                                 alt="avatar"
+                                                 class="rounded-circle img-fluid" style="width: 150px;"/>
+                                        </t>
+                                        <h5 class="my-3">
+                                            <t t-out="person.name"/>
+                                        </h5>
+                                        <p class="text-muted mb-1">
+                                            <t t-out="person.email"/>
+                                        </p>
+                                        <p class="text-muted mb-4">
+                                            <t t-out="person.phone"/>
+                                        </p>
+                                        <p class="text-muted mb-4">
+                                            <a t-attf-href="/my/person/print/{{person.id}}"
+                                               class="btn btn-secondary btn-block o_download_btn fa fa-download">
+                                                Download
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Name</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0">
+                                                    <t t-out="person.name"/>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Email</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0">
+                                                    <t t-out="person.email"/>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Phone</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0">
+                                                    <t t-out="person.phone"/>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Date</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0">
+                                                    <t t-out="person.date"/>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container py-5">
+                        <h1>Chatter Feature</h1>
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="person"/>
+                        </t>
+                    </div>
+                </section>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="new_person_form_view_portal">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_table">
+                <div class="alert alert-success" role="alert" t-if="success_msg">
+                    <t t-out="success_msg"/>
+                </div>
+                <t t-foreach="error_list" t-as="error">
+                    <div class="alert alert-danger" role="alert">
+                        <t t-out="error"/>
+                    </div>
+                </t>
+                <div class="alert alert-warning" id="person_client_side_validation_message" role="alert"
+                     style="display:none;">
+                    Hi this is warning message.....
+                </div>
+                <div id="new_person_creation">
+                    <form method="post">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="name">Name</label>
+                            <div class="col-sm-10">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <input type="char" name="name" id="name" class="form-control"
+                                       placeholder="Enter Person Name"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="user">User</label>
+                            <div class="col-sm-10">
+                                <select name="user" id="user" class="form-control">
+                                    <option value="">Selection user</option>
+                                    <t t-foreach="users" t-as="user">
+                                        <option t-att-value="user.id">
+                                            <t t-out="user.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-primary">Create person Profile</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

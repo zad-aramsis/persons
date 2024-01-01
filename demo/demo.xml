@@ -1,0 +1,34 @@
+<odoo>
+    <data>
+        <record id="object0" model="person.details">
+            <field name="name">person0</field>
+            <field name="phone">10</field>
+            <field name="email">person0@mail.com</field>
+            <field name="date" eval="DateTime.now()"/>
+        </record>
+        <record id="object1" model="person.details">
+            <field name="name">person1</field>
+            <field name="phone">11</field>
+            <field name="email">person1@mail.com</field>
+            <field name="date" eval="DateTime.now()"/>
+        </record>
+        <record id="object2" model="person.details">
+            <field name="name">person2</field>
+            <field name="phone">12</field>
+            <field name="email">person2@mail.com</field>
+            <field name="date" eval="DateTime.now()"/>
+        </record>
+        <record id="object3" model="person.details">
+            <field name="name">person3</field>
+            <field name="phone">13</field>
+            <field name="email">person3@mail.com</field>
+            <field name="date" eval="DateTime.now()"/>
+        </record>
+        <record id="object4" model="person.details">
+            <field name="name">person4</field>
+            <field name="phone">14</field>
+            <field name="email">person4@mail.com</field>
+            <field name="date" eval="DateTime.now()"/>
+        </record>
+    </data>
+</odoo>

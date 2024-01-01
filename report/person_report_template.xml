@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="person_profile_custom_report_template">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <div class="oe_structure"/>
+                <div class="col-12 text-center">
+                    <t t-if="o.img">
+                        <img t-attf-src="data:image/png;base64,{{o.img}}" alt="avatar"
+                             class="rounded-circle img-fluid" style="width:150px;"/>
+                    </t>
+                    <t t-else="">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                             alt="avatar"
+                             class="rounded-circle img-fluid" style="width: 150px;"/>
+                    </t>
+                    <h2 t-field="o.name" style="border-bottom:1px solid black;"/>
+                </div>
+
+                <div class="row" style="margin-top:10px;">
+                    <div class="col-3 text-center">
+                        <b>Name</b>
+                        <p t-field="o.name"/>
+                    </div>
+                    <div class="col-3 text-center">
+                        <b>Email</b>
+                        <p t-field="o.email"/>
+                    </div>
+                    <div class="col-3 text-center">
+                        <b>Phone</b>
+                        <p t-field="o.phone"/>
+                    </div>
+                    <div class="col-3 text-center">
+                        <b>Date</b>
+                        <p t-field="o.date"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+
+
+    </template>
+
+    <template id="person_profile_report_temp">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="persons.person_profile_custom_report_template"/>
+            </t>
+        </t>
+    </template>
+
+    <record id="person_profile_report" model="ir.actions.report">
+        <field name="name">Custom Person Card</field>
+        <field name="model">person.details</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">persons.person_profile_report_temp</field>
+        <field name="report_file">persons.person_profile_report_temp</field>
+        <field name="print_report_name">'Person-Card'</field>
+        <field name="binding_model_id" ref="persons.model_person_details"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

@@ -1,0 +1,50 @@
+<odoo>
+    <data>
+        <record id="person_details_form_view" model="ir.ui.view">
+            <field name="name">person.details.form.view</field>
+            <field name="model">person.details</field>
+            <field name="arch" type="xml">
+                <form string="Person Details">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="phone"/>
+                            </group>
+                            <group>
+                                <field name="email"/>
+                                <field name="date"/>
+                            </group>
+                        </group>
+                        <div>
+                            <field name="img" class="oe_avatar" widget="image"/>
+                        </div>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="person_details_list_view" model="ir.ui.view">
+            <field name="name">person.details.list.view</field>
+            <field name="model">person.details</field>
+            <field name="arch" type="xml">
+                <tree string="Person Details">
+                    <field name="name"/>
+                    <field name="email"/>
+                    <field name="phone"/>
+                    <field name="date"/>
+                </tree>
+            </field>
+        </record>
+        <record id="person_details_action_window" model="ir.actions.act_window">
+            <field name="name">Person Details</field>
+            <field name="res_model">person.details</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem name="Persons" id="person_details_menu_root" action="person_details_action_window"/>
+    </data>
+</odoo>

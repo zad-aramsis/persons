@@ -1,0 +1,76 @@
+<odoo>
+    <data>
+        <template id="list_objects">
+            <ul>
+                <li t-foreach="objects" t-as="object">
+                    <a t-attf-href="#{ root }/objects/#{ object.id }">
+                        <t t-esc="object.display_name"/>
+                    </a>
+                </li>
+            </ul>
+        </template>
+
+        <template id="get_object">
+            <h1>
+                <t t-esc="object.display_name"/>
+            </h1>
+            <dl>
+                <t t-foreach="object._fields" t-as="field">
+                    <dt>
+                        <t t-esc="field"/>
+                    </dt>
+                    <dd>
+                        <t t-esc="object[field]"/>
+                    </dd>
+                </t>
+            </dl>
+        </template>
+
+        <template id="tmp_person_data" name="Person Details">
+            <t t-call="web.html_container">
+                <div class="oe_structure">
+                    <div class="container">
+                        <br/>
+                        <center>
+                            <h3>Person Details</h3>
+                        </center>
+                        <br/>
+                        <table class="table-striped table">
+                            <thead style="font-size: 23px;">
+                                <tr>
+                                    <h6>
+                                        <b>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th><b>Date</b></th>
+                                        </b>
+                                    </h6>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="records" t-as="line">
+                                    <tr>
+                                        <td>
+                                            <span t-esc="line.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line.email"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line.phone"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line.date"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>
